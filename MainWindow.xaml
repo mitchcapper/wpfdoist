@@ -1,0 +1,11 @@
+﻿<Window x:Class="WPFDoist.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding title}" Height="500" Width="1000" StateChanged="MainWindow_StateChanged" Background="#FFF2F2F2" >
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<WebBrowser Name="browserMain"  />
+	</Grid>
+</Window>
