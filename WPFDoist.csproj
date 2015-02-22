@@ -68,11 +68,16 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GalaSoft.MvvmLight">
-      <HintPath>dlls\GalaSoft.MvvmLight.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.1.1.35049, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\MvvmLightLibs.5.1.1.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>dlls\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.1.1.35049, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\MvvmLightLibs.5.1.1.0\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform">
+      <HintPath>packages\MvvmLightLibs.5.1.1.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
@@ -83,13 +88,17 @@
     <Reference Include="Microsoft.Office.Interop.Outlook, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>dlls\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.1.1.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -150,7 +159,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="WPFDoist_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
