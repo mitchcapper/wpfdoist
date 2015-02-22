@@ -2,9 +2,9 @@
 -	Todoist Windows app has some decent issues and less than great dependencies.
 
 # Features
--	WPF Native browser control (so zoom and other IE controls work)
+-	WPF Native browser control (so zoom and other IE controls work, control +/- to zoom)
 -	Windows keyboard shortcut support for adding tasks/bringing to front (defaults to control+shift+t)
--	Allows adding of additional javascript/css to the page (to have your code after full load add a js function called UserOnLoaded
+-	Allows adding of additional javascript/css to the page (to have your code after full load add a js function called UserOnLoaded)
 -	Outlook email links
 -	Support for arbitrary link patterns in code
 

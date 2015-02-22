@@ -144,14 +144,14 @@ function ReplaceFuncs(){
 	+ @"
 }
 window.addEventListener('load', OurLoaded, false);
-";
+" + Settings.GetSettingS(SET_NAMES.AdditionalJS) + "\n";
 			var disable_setting_icon = Settings.GetSettingB(SET_NAMES.HideTodoistSettings) ? ".cmp_gear {display: none !important;}\n" : "";
-			string css_str = disable_setting_icon +  @"
+			string css_str = disable_setting_icon + @"
 #search_bar .input_q {
 	width: 300px !important;
 }
 
-";
+" + Settings.GetSettingS(SET_NAMES.AdditionalCSS) + "\n";
 			if (doc2.body == null && false)
 				return;
 
