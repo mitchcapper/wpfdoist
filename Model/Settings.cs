@@ -11,7 +11,7 @@ namespace WPFDoist.Model {
 	public enum SETTING_TYPE {STRING,BOOL};
 	
 	
-	public enum SET_NAMES { MinimizeOnExit, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions,SearchForNumbersGreaterThan };
+	public enum SET_NAMES { MinimizeOnExit, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions,SearchForNumbersGreaterThan, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey };
 	public static class Settings {
 		public class SaveSetting {
 			public string name { get; set; }
@@ -105,6 +105,10 @@ namespace WPFDoist.Model {
 			AddSetting(SET_NAMES.RemovePeopleAssign, "Remove the people assignment option on tasks",SETTING_TYPE.STRING, false);
 			AddSetting(SET_NAMES.HideOptions,"Hide WPFDoist options (only way to re-enable is delete/edit settings file", SETTING_TYPE.STRING, false);
 			AddSetting(SET_NAMES.SearchForNumbersGreaterThan, "If a number is specified here you can search for numbers greater than this number (normally it treats numbers as days)", SETTING_TYPE.STRING, "999");
+			AddSetting(SET_NAMES.HotKeyUseAlt, "", SETTING_TYPE.BOOL, false);
+			AddSetting(SET_NAMES.HotKeyUseControl, "", SETTING_TYPE.BOOL, true);
+			AddSetting(SET_NAMES.HotKeyUseShift, "", SETTING_TYPE.BOOL, true);
+			AddSetting(SET_NAMES.HotKeyKey, "", SETTING_TYPE.BOOL, "T");
 			LoadSettings();
 #pragma warning disable 4014
 			SaveSettings();

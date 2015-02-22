@@ -3,7 +3,7 @@
 
 # Features
 -	WPF Native browser control (so zoom and other IE controls work)
--	Windows keyboard shortcut support for adding tasks
+-	Windows keyboard shortcut support for adding tasks/bringing to front (defaults to control+shift+t)
 -	Allows adding of additional javascript/css to the page (to have your code after full load add a js function called UserOnLoaded
 -	Outlook email links
 -	Support for arbitrary link patterns in code
