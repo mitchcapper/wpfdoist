@@ -28,7 +28,7 @@ namespace WPFDoist {
 			Icon = Properties.Resources.todoist.ToImageSource();
 
 			InitializeComponent();
-			DataContext = vm = new MainViewModel(browserMain);
+			vm = DataContext as MainViewModel;
 			Loaded += MainWindow_Loaded;
 			Closing += MainWindow_Closing;
 
@@ -39,11 +39,15 @@ namespace WPFDoist {
 			if (Settings.GetSettingB(SET_NAMES.MinimizeOnExit)) {
 				e.Cancel = true;
 				last_max = WindowState == WindowState.Maximized;
-				WindowState = WindowState.Minimized;
+				if (Settings.GetSettingB(SET_NAMES.MinimizeOnExit))
+					Hide();
+				else
+					WindowState = WindowState.Minimized;
+				
 			}
 		}
 		void MainWindow_Loaded(object sender, RoutedEventArgs e) {
-			vm.OnLoad();
+			vm.OnLoad(browserMain);
 			vm.UnhideWindow += (o, ex) => unhide();
 		}
 		private void MainWindow_StateChanged(object sender, System.EventArgs e) {
@@ -54,6 +58,7 @@ namespace WPFDoist {
 		}
 		private bool last_max = true;
 		private void unhide() {
+			Show();
 			WindowState = last_max ? WindowState.Maximized : WindowState.Normal;
 			SetForegroundWindow(new WindowInteropHelper(this).Handle);
 		}

@@ -22,28 +22,38 @@ namespace WPFDoist.ViewModel {
 			icon.ContextMenu = new ContextMenu();
 			icon.LeftClickCommand = GetCmd(unhide);
 			icon.DoubleClickCommand = GetCmd(unhide);
-			var itm = new MenuItem { Header = "Sync" };
+			var itm = new MenuItem { Header = "Open" };
+			itm.Click += (o, e) => unhide();
+			icon.ContextMenu.Items.Add(itm);
+			itm = new MenuItem { Header = "Sync" };
 			itm.Click += (o, e) => browser.Sync();
 			icon.ContextMenu.Items.Add(itm);
 			itm = new MenuItem { Header = "Reload" };
 			itm.Click += (o, e) => browser.Reload();
 			icon.ContextMenu.Items.Add(itm);
-			
-			//itm = new MenuItem { Header = "Options" };
-			//itm.Click += (o, e) => reload();
-			//icon.ContextMenu.Items.Add(itm);
+
+			if (!Settings.GetSettingB(SET_NAMES.HideOptions)) {
+				itm = new MenuItem { Header = "Options" };
+				itm.Click += (o, e) => ShowOptions();
+				icon.ContextMenu.Items.Add(itm);
+			}
 			itm = new MenuItem { Header = "Exit" };
 			itm.Click += (o, e) => { icon.Visibility = Visibility.Collapsed; icon.Dispose(); Environment.Exit(0); };
 			icon.ContextMenu.Items.Add(itm);
 		}
+
+		private void ShowOptions() {
+			var win = new SettingsWindow();
+			win.ShowDialog();
+		}
+
 		public string title {
 			get { return _title; }
 			set { Set(() => title, ref _title, value); }
 		}
 		private string _title;
 		
-		public MainViewModel(WebBrowser web_browser) {
-			browser = new BrowserManager(web_browser);
+		public MainViewModel() {
 		}
 		private BrowserManager browser;
 		public readonly string content_oulook_indent = "[[outlook=id3=";
@@ -76,7 +86,9 @@ namespace WPFDoist.ViewModel {
 			item.Display(false);
 		}
 
-		public void OnLoad() {
+		public void OnLoad(WebBrowser web_browser) {
+			
+			browser = new BrowserManager(web_browser);
 			browser.FixBrowserMode();
 			browser.TitleChanged += (o, e) => title = e;
 			browser.EmailClicked += EmailClicked;
@@ -103,16 +115,17 @@ namespace WPFDoist.ViewModel {
 			var setting_key = Settings.GetSettingS(SET_NAMES.HotKeyKey);
 			if (String.IsNullOrWhiteSpace(setting_key))
 				return;
-			var key = (System.Windows.Forms.Keys)System.Windows.Forms.Keys.Parse(typeof(System.Windows.Forms.Keys),setting_key[0].ToString());
-			HotKeyboardHook.ModifierKeys m_keys=0;
-			if (Settings.GetSettingB(SET_NAMES.HotKeyUseAlt))
-                m_keys |= HotKeyboardHook.ModifierKeys.Alt;
-			if (Settings.GetSettingB(SET_NAMES.HotKeyUseShift))
-				m_keys |= HotKeyboardHook.ModifierKeys.Shift;
-			if (Settings.GetSettingB(SET_NAMES.HotKeyUseControl))
-				m_keys |= HotKeyboardHook.ModifierKeys.Control;
 
 			try {
+				var key = (System.Windows.Forms.Keys)System.Windows.Forms.Keys.Parse(typeof(System.Windows.Forms.Keys), setting_key[0].ToString().ToUpper());
+				HotKeyboardHook.ModifierKeys m_keys = 0;
+				if (Settings.GetSettingB(SET_NAMES.HotKeyUseAlt))
+					m_keys |= HotKeyboardHook.ModifierKeys.Alt;
+				if (Settings.GetSettingB(SET_NAMES.HotKeyUseShift))
+					m_keys |= HotKeyboardHook.ModifierKeys.Shift;
+				if (Settings.GetSettingB(SET_NAMES.HotKeyUseControl))
+					m_keys |= HotKeyboardHook.ModifierKeys.Control;
+
 				kb_shortcut.RegisterHotKey(m_keys, key);
 			} catch (Exception e) {
 				var res = MessageBox.Show("Unable to register hot key its probably already running (or regged to another program), are you sure you want to continue launch\n" + e.Message, "Already Running Continue?", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No);
