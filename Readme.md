@@ -7,12 +7,15 @@
 -	Allows adding of additional javascript/css to the page (to have your code after full load add a js function called UserOnLoaded)
 -	Outlook email links
 -	Support for arbitrary link patterns in code
+-	Extension support for custom handling, custom formatting, and custom protocol recognition (for example onenote: link support!). See SampleExtensions\Readme.md for details.
 
 
 # Known Issues
 -	Note while this works with outlook email links it only works with the official email ID.  This ID changes when the email changes folders.
 -	Primarily tested with outlook 2013/2016 and windows 8.1/10.
 -	The apps IE compat mode will not be set right on first launch (so exit and re-launch the very first time to get the browser to behave right).
+-	Rarely (maybe slow load?) the extensions are not properly loaded. I am not yet sure why this happens, but waiting seems to fix it (you can also right click on the systray and reload otherwise).
+-	If you get the error when running setup of: "You cannot start application WPFDoist from this location because it is already installed from a different location."  It is because the installer is at a different location from where you last installed from (yay one click installers) to fix just uninstall from add/remove programs before re-running the installer.  You will not lose your settings or user data folder.
 
 # Directions
 -	Install app (can run standalone in a folder as portable also, its just a rar archive as an exe)
