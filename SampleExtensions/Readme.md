@@ -27,6 +27,8 @@ Extensions can be one of the following types:
 
 ## Examples
 -	There are .net and javascript examples for each type.  Look at the SampleExtensions folder for how to write plugins.  *.xml files in that folder are the xml examples (also see the OneNoteProtocolExtension.xml in the main folder).  The Project files are .net examples.
+-	The unsafe onenote extension uses Process.start to run the onenote link, using shell execute on web content is probably a bad idea which is why we switched to the protocol handler version that the browser uses:)
+-	The highlighter extension shows a simple extension that iwll highlight single words in green that in tasks like _word_  (underscores on each side0 
 
 
 ## Debugging
