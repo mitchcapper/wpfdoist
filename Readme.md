@@ -7,7 +7,7 @@
 -	Allows adding of additional javascript/css to the page (to have your code after full load add a js function called UserOnLoaded)
 -	Outlook email links
 -	Support for arbitrary link patterns in code
--	Extension support for custom handling, custom formatting, and custom protocol recognition (for example onenote: link support!). See SampleExtensions\Readme.md for details.
+-	Extension support for custom handling, custom formatting, and custom protocol recognition (for example onenote: link support!). See [SampleExtensions\Readme.md](https://github.com/mitchcapper/wpfdoist/blob/master/SampleExtensions/Readme.md)  for details.
 
 
 # Known Issues
