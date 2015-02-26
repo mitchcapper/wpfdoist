@@ -11,7 +11,9 @@ namespace WPFDoist.Model {
 	public enum SETTING_TYPE {STRING,BOOL};
 	
 	
-	public enum SET_NAMES { MinimizeOnExit, HideWhenMinimized, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions,SearchForNumbersGreaterThan, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey };
+	public enum SET_NAMES { MinimizeOnExit, HideWhenMinimized, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions,SearchForNumbersGreaterThan, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey,
+		JSDebug
+	};
 	public static class Settings {
 		public class SaveSetting {
 			public string name { get; set; }
@@ -138,6 +140,7 @@ namespace WPFDoist.Model {
 			AddSetting(SET_NAMES.HotKeyUseControl, "", true);
 			AddSetting(SET_NAMES.HotKeyUseShift, "",  true);
 			AddSetting(SET_NAMES.HotKeyKey, "", "T");
+			AddSetting(SET_NAMES.JSDebug, @"Javascript/Plugin Debugging (alerts on errors, and writes c:\temp\js_debug.js)", false);
 			LoadSettings();
 		}
 		//  KeyboardShortcut AdditionalJS AdditionalCSS DisableRepeatTaskFullComplete HideSettings DisableContextMenu

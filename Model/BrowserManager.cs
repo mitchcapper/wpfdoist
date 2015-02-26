@@ -1,12 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using mshtml;
+using WPFDoist.ViewModel;
 
 namespace WPFDoist.Model {
 	[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -16,19 +22,46 @@ namespace WPFDoist.Model {
 		public ObjectForScriptingHelper(BrowserManager manager) {
 			this.manager = manager;
 		}
+		public void logq(Object msg) {
+			var msg_str = "JS Plugin log: " + msg.ToString();
+			Debug.WriteLine(msg_str);
+		}
+
+		public void log(Object msg) {
+			var msg_str = "JS Plugin log: " + msg.ToString();
+			Debug.WriteLine(msg_str);
+			if (Settings.GetSettingB(SET_NAMES.JSDebug))
+				MessageBox.Show(msg_str);
+		}
+		public bool plugin_link(Object id, Object link) {
+			try {
+				var int_id = int.Parse(id.ToString());
+				var link_str = Encoding.UTF8.GetString(Convert.FromBase64String(link.ToString()));
+				var ext = ViewModelLocator.instance.Extensions.extensions.Single(a => a.id == int_id);
+				ext.ext_as_link.HandleLink(link_str);
+			} catch (Exception e) {
+				if (Settings.GetSettingB(SET_NAMES.JSDebug))
+					MessageBox.Show("Error running plugin of: " + e.Message);
+			}
+			return false;
+		}
 		public void openmail(Object link) {
 			manager.FireEmailEvt(link.ToString());
 		}
 		public void onError(Object arg1, Object arg2, Object arg3) {
-			Debug.WriteLine("javascript err:  " + arg1 + " - " + arg2 + " - " + arg3);
+			var err_msg = "javascript err:  " + arg1 + " - " + arg2 + " - " + arg3;
+			Debug.WriteLine(err_msg);
+			if (Settings.GetSettingB(SET_NAMES.JSDebug))
+				MessageBox.Show(err_msg);
 			//m_Window.onError(arg1, arg2, arg3);
 		}
 	}
 
 	public class BrowserManager {
 		public BrowserManager(WebBrowser browser) {
+			var exts = ViewModelLocator.instance.Extensions.extensions;//load the extensions now rather than when we need them
 			browserMain = browser;
-            browserMain.Navigated += wb_browser_Navigated;
+			browserMain.Navigated += wb_browser_Navigated;
 			helper = new ObjectForScriptingHelper(this);
 			browserMain.ObjectForScripting = helper;
 		}
@@ -37,10 +70,10 @@ namespace WPFDoist.Model {
 		}
 		public void Sync() {
 			browserMain.InvokeScript("sync");
-        }
+		}
 		public void Loaded() {
 			browserMain.Navigate("https://todoist.com/app");
-			
+
 		}
 		public async void DoSearch(String search_str, bool allow_retry = true) {
 			var err = false;
@@ -50,11 +83,11 @@ namespace WPFDoist.Model {
 				err = true;
 			}
 			if (err && allow_retry) {
-					await Task.Delay(500);
-					DoSearch(search_str, false);
-				}
+				await Task.Delay(500);
+				DoSearch(search_str, false);
+			}
 		}
-        public async void Reload() {
+		public async void Reload() {
 			browserMain.Navigate("about:blank");
 			await Task.Delay(300);
 			browserMain.Navigate("https://todoist.com/app");
@@ -68,8 +101,8 @@ namespace WPFDoist.Model {
 		private ObjectForScriptingHelper helper;
 		public void FireEmailEvt(String link) {
 			if (EmailClicked != null)
-				EmailClicked(this,link);
-        }
+				EmailClicked(this, link);
+		}
 		private void wb_browser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e) {
 			HTMLDocument doc2 = browserMain.Document as HTMLDocument;
 			if (TitleChanged != null)
@@ -91,7 +124,7 @@ namespace WPFDoist.Model {
 			string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "PeopleAssigner.render = function(){return null;};" + "\n" : "";
 			string numbers_greater_than_js = "";
 			var greater_str = Settings.GetSettingS(SET_NAMES.SearchForNumbersGreaterThan);
-			if (! String.IsNullOrWhiteSpace(greater_str)) {
+			if (!String.IsNullOrWhiteSpace(greater_str)) {
 				numbers_greater_than_js = @"
 		DateBocks.magicDate2 = DateBocks.magicDate;
 		DateBocks.magicDate = function (j,a) {
@@ -103,11 +136,57 @@ namespace WPFDoist.Model {
 			return DateBocks.magicDate2(j,a);
 		};" + "\n";
 			}
-            string js_str = @"
+			string replace_str = @"
+function wpf_replace_func_norm(ext_id){
+	window.external.logq('args:' + obj_str(arguments));
+	return wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2));
+}
+function get_call_arr(args,start_at){
+	var call_arr = new Array();//slice does't work on arguments
+	for (var x = start_at; x < args.length;x++){
+		call_arr.push(args[x]);
+	}
+	return call_arr;
+}
+function wpf_replace_func_link(ext_id,trash,full_link){
+	full_link = btoa(full_link);
+	return ""<a href='#' onclick=\""return window.external.plugin_link("" + ext_id + "",'"" + full_link + ""');\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a>"";
+}
+function wpf_replace_func_proto(ext_id,trash,full_link){
+	full_link = full_link.replace(""&amp;"",""&"");
+	if (wpf_proto_funcs[ext_id])
+		full_link = wpf_proto_funcs[ext_id](full_link);
+	full_link = btoa(full_link);
+	return ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a>"";
+}
+var wpf_funcs = new Object();
+var wpf_proto_funcs = new Object();
+";
+			var func_str = "";
+			var tag_str = "";
+			var itms = ViewModelLocator.instance.Extensions.extensions;
+			foreach (var itm in itms) {
+				func_str += "wpf_funcs[" + itm.id + "] = function(){" + itm.ext.regexp_replace_with_func_body + "};\n";
+				if (itm.type == EXT_TYPE.PROTO && !String.IsNullOrWhiteSpace(itm.ext_as_proto.override_url_func_body))
+					func_str += "wpf_proto_funcs[" + itm.id + "] = function(){" + itm.ext_as_proto.override_url_func_body + "};\n";
+				var func_name = "wpf_replace_func_norm";
+				if (itm.type == EXT_TYPE.LINK)
+					func_name = "wpf_replace_func_link";
+				if (itm.type == EXT_TYPE.PROTO)
+					func_name = "wpf_replace_func_proto";
+				tag_str += "Formatter.tags_to_enable.push([/" + itm.ext.regexp_to_find + "/g," + func_name + ".bind(Formatter," + itm.id + ")]);\n";
+			}
+			replace_str += func_str;
+			var right_click_disable = Settings.GetSettingB(SET_NAMES.DisableContextMenu) ? "document.oncontextmenu = function() {return false;}" : "";
+			//MessageBox.Show(replace_str + "\n\n" + tag_str);
+			string js_str = @"
 function externalError(errorMsg, document, lineNumber) {
   window.external.onError(errorMsg, document, lineNumber);
   return true;
  }
+function obj_str(obj){
+	return JSON.stringify(obj);
+}
  window.onerror = externalError;
 function do_search(str){
 	//str = str.replace(/ /g,'__'); 
@@ -126,11 +205,12 @@ function HandleUrl(url){
 	window.external.HandleLink(url);
 	return false;
 }
+
 function OurLoaded(){
+	window.external.logq('loaded called');
      //disable the right mouse click menu
-	setTimeout( ReplaceFuncs, 3000 );
-     document.oncontextmenu = function() {return false;}" + 
- @"
+	setTimeout( ReplaceFuncs, 3000 );" + "\n" + right_click_disable + "\n" + tag_str +
+@"
 	ReplaceFuncs();
 	if (window.UserOnLoaded){
 		window.UserOnLoaded();
@@ -141,10 +221,15 @@ function ReplaceFuncs(){
 " + remove_people_js + numbers_greater_than_js + @"
 		
 	} " + prevent_recurring_force_complete
-	+ @"
++ @"
 }
 window.addEventListener('load', OurLoaded, false);
-" + Settings.GetSettingS(SET_NAMES.AdditionalJS) + "\n";
+" + replace_str + Settings.GetSettingS(SET_NAMES.AdditionalJS) + "\n";
+			if (Settings.GetSettingB(SET_NAMES.JSDebug)) {
+				try {
+					File.WriteAllText(@"c:\temp\js_debug.js", js_str);
+				} catch (Exception) { }
+			}
 			var disable_setting_icon = Settings.GetSettingB(SET_NAMES.HideTodoistSettings) ? ".cmp_gear {display: none !important;}\n" : "";
 			string css_str = disable_setting_icon + @"
 #search_bar .input_q {
@@ -176,6 +261,6 @@ window.addEventListener('load', OurLoaded, false);
 				key.SetValue("WPFDoist.exe", 11000, RegistryValueKind.DWord);
 			} catch (Exception) { }
 		}
-		
+
 	}
 }

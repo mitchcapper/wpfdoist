@@ -1,9 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22512.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDoist", "WPFDoist.csproj", "{71257F0D-A230-4909-9A8F-E0A2AD7974D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDoistExtLib", "WPFDoistExtLib\WPFDoistExtLib.csproj", "{CD3E8DBC-6A6C-44C6-A2CD-7BAA10FF8C2F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleExtensions", "SampleExtensions", "{80BF4F63-3F42-4E23-9B62-87D586718B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighlightExtension", "SampleExtensions\HighlightExtension\HighlightExtension.csproj", "{97D432CE-3C00-48F4-B83D-8EFFE6136F13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OneNoteProtocolExtension", "SampleExtensions\OneNoteProtocolExtension\OneNoteProtocolExtension.csproj", "{37E2F330-310B-44BE-8DC6-BB931DC4E8B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeOneNoteLinkExtension", "SampleExtensions\UnsafeOneNoteLinkExtension\UnsafeOneNoteLinkExtension.csproj", "{2A0AAB9C-59A6-4D38-BCB0-70EFADEB4203}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +25,29 @@ Global
 		{71257F0D-A230-4909-9A8F-E0A2AD7974D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71257F0D-A230-4909-9A8F-E0A2AD7974D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71257F0D-A230-4909-9A8F-E0A2AD7974D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD3E8DBC-6A6C-44C6-A2CD-7BAA10FF8C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD3E8DBC-6A6C-44C6-A2CD-7BAA10FF8C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD3E8DBC-6A6C-44C6-A2CD-7BAA10FF8C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD3E8DBC-6A6C-44C6-A2CD-7BAA10FF8C2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D432CE-3C00-48F4-B83D-8EFFE6136F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D432CE-3C00-48F4-B83D-8EFFE6136F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D432CE-3C00-48F4-B83D-8EFFE6136F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D432CE-3C00-48F4-B83D-8EFFE6136F13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37E2F330-310B-44BE-8DC6-BB931DC4E8B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E2F330-310B-44BE-8DC6-BB931DC4E8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E2F330-310B-44BE-8DC6-BB931DC4E8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E2F330-310B-44BE-8DC6-BB931DC4E8B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A0AAB9C-59A6-4D38-BCB0-70EFADEB4203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A0AAB9C-59A6-4D38-BCB0-70EFADEB4203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A0AAB9C-59A6-4D38-BCB0-70EFADEB4203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A0AAB9C-59A6-4D38-BCB0-70EFADEB4203}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{97D432CE-3C00-48F4-B83D-8EFFE6136F13} = {80BF4F63-3F42-4E23-9B62-87D586718B86}
+		{37E2F330-310B-44BE-8DC6-BB931DC4E8B2} = {80BF4F63-3F42-4E23-9B62-87D586718B86}
+		{2A0AAB9C-59A6-4D38-BCB0-70EFADEB4203} = {80BF4F63-3F42-4E23-9B62-87D586718B86}
 	EndGlobalSection
 EndGlobal

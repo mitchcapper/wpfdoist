@@ -4,8 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using WPFDoist.Model;
 
 namespace WPFDoist.ViewModel {
 	class ViewModelLocator {
@@ -22,9 +24,15 @@ namespace WPFDoist.ViewModel {
 			if (first) {
 				SimpleIoc.Default.Register<MainViewModel>();
 				SimpleIoc.Default.Register<SettingsViewModel>();
+				SimpleIoc.Default.Register<ExtensionManager>();
+				
 			}
 		}
-
+		public ExtensionManager Extensions {
+			get {
+				return ServiceLocator.Current.GetInstance<ExtensionManager>();
+			}
+		}
 		public MainViewModel Main {
 			get {
 				return ServiceLocator.Current.GetInstance<MainViewModel>();

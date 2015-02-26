@@ -51,7 +51,7 @@ namespace WPFDoist.ViewModel {
 			get { return _title; }
 			set { Set(() => title, ref _title, value); }
 		}
-		private string _title;
+		private string _title="WPFDoist";
 		
 		public MainViewModel() {
 		}

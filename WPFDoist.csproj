@@ -27,7 +27,7 @@
     <ProductName>WPFDoist</ProductName>
     <PublisherName>Mitch Capper</PublisherName>
     <SuiteName>NA</SuiteName>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -119,6 +119,7 @@
     <Compile Include="Model\BrowserManager.cs" />
     <Compile Include="Model\Helpers.cs" />
     <Compile Include="Model\HotKeyboardHook.cs" />
+    <Compile Include="Model\ParserExtension.cs" />
     <Compile Include="Model\Settings.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -185,6 +186,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\todoist.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="WPFDoistExtLib\WPFDoistExtLib.csproj">
+      <Project>{cd3e8dbc-6a6c-44c6-a2cd-7baa10ff8c2f}</Project>
+      <Name>WPFDoistExtLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="OneNoteProtocolExtension.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

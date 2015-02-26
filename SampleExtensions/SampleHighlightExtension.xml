@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<Extensions>
+<ParserExtension>
+	<regexp_to_find><![CDATA[_([^ ]+)_]]></regexp_to_find>
+	<regexp_replace_with_func_body><![CDATA[return "<b style='color:green'>" + arguments[0] + '</b>';]]></regexp_replace_with_func_body>
+</ParserExtension>
+</Extensions>

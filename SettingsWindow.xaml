@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFDoist"
         mc:Ignorable="d" DataContext="{Binding Settings, Source={StaticResource Locator}}"
-        Title="WPFDoist Settings" Height="700" Width="700">
+        Title="WPFDoist Settings" Height="770" Width="700" WindowStartupLocation="CenterScreen">
     <Grid Margin="15">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
