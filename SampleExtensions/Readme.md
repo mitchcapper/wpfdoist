@@ -10,7 +10,7 @@ Extensions can be one of the following types:
 
 # Extension Members
 -	All extensions have the following members:
---	regexp_to_find - This should be a regex representing the text in the task we want to be replacing.  Note todist converts certain entities like & to &amp;.  You should have atleast one capture group (part in parens in the regex) that represents the 
+--	regexp_to_find - This should be a regex representing the text in the task we want to be replacing.  Note todist converts certain entities like & to &amp;.  You should have atleast one capture group (part in parens in the regex) that represents the content used by the replace function.  For Links/Protocols $1 should contain the full link.  **NOTE** this pattern will automatically be used where it must be followed either by the end of the task line, or a space. You cannot match part of a word at this time (if someone has a use case for this let me know).
 --	regexp_replace_with_func_body - this function is called (passing additional captures to it accessible in the arguments array) and you should return the Text/html you want to replace the text you extracted out.  This should not be a full <a href link in the case of the other extension types (we will handle that wiring for you) just the display html
 -	ParserExtensionLink (.net only) has one additional function:
 --		HandleLink(String link) - This will be called when the user clicks on that part of the task, and link will be the first capture in your regex

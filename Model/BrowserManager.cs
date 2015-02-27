@@ -24,12 +24,12 @@ namespace WPFDoist.Model {
 		}
 		public void logq(Object msg) {
 			var msg_str = "JS Plugin log: " + msg.ToString();
-			Debug.WriteLine(msg_str);
+			Debug.WriteLine(DateTime.Now + ": " + msg_str);
 		}
 
 		public void log(Object msg) {
 			var msg_str = "JS Plugin log: " + msg.ToString();
-			Debug.WriteLine(msg_str);
+			Debug.WriteLine(DateTime.Now + ": " + msg_str);
 			if (Settings.GetSettingB(SET_NAMES.JSDebug))
 				MessageBox.Show(msg_str);
 		}
@@ -139,7 +139,7 @@ namespace WPFDoist.Model {
 			string replace_str = @"
 function wpf_replace_func_norm(ext_id){
 	window.external.logq('args:' + obj_str(arguments));
-	return wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2));
+	return wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + "" "";
 }
 function get_call_arr(args,start_at){
 	var call_arr = new Array();//slice does't work on arguments
@@ -150,14 +150,14 @@ function get_call_arr(args,start_at){
 }
 function wpf_replace_func_link(ext_id,trash,full_link){
 	full_link = btoa(full_link);
-	return ""<a href='#' onclick=\""return window.external.plugin_link("" + ext_id + "",'"" + full_link + ""');\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a>"";
+	return ""<a href='#' onclick=\""return window.external.plugin_link("" + ext_id + "",'"" + full_link + ""');\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a> "";
 }
 function wpf_replace_func_proto(ext_id,trash,full_link){
 	full_link = full_link.replace(""&amp;"",""&"");
 	if (wpf_proto_funcs[ext_id])
 		full_link = wpf_proto_funcs[ext_id](full_link);
 	full_link = btoa(full_link);
-	return ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a>"";
+	return ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a> "";
 }
 var wpf_funcs = new Object();
 var wpf_proto_funcs = new Object();
@@ -174,7 +174,7 @@ var wpf_proto_funcs = new Object();
 					func_name = "wpf_replace_func_link";
 				if (itm.type == EXT_TYPE.PROTO)
 					func_name = "wpf_replace_func_proto";
-				tag_str += "Formatter.tags_to_enable.push([/" + itm.ext.regexp_to_find + "/g," + func_name + ".bind(Formatter," + itm.id + ")]);\n";
+				tag_str += "Formatter.tags_to_enable.push([/" + itm.ext.regexp_to_find + " /g," + func_name + ".bind(Formatter," + itm.id + "),/" + itm.ext.regexp_to_find + "$/g," + func_name + ".bind(Formatter," + itm.id + ")]);\n";//must have a space following or be the end of the task
 			}
 			replace_str += func_str;
 			var right_click_disable = Settings.GetSettingB(SET_NAMES.DisableContextMenu) ? "document.oncontextmenu = function() {return false;}" : "";
@@ -205,17 +205,23 @@ function HandleUrl(url){
 	window.external.HandleLink(url);
 	return false;
 }
-
-function OurLoaded(){
-	window.external.logq('loaded called');
-     //disable the right mouse click menu
+function LoadTest(){
+	if (! window.Formatter){
+		setTimeout(LoadTest, 300);
+		return;
+	}
 	setTimeout( ReplaceFuncs, 3000 );" + "\n" + right_click_disable + "\n" + tag_str +
 @"
 	ReplaceFuncs();
 	if (window.UserOnLoaded){
 		window.UserOnLoaded();
 	}
+	window.external.logq('Fully Loaded finished');
+}
+function OurLoaded(){
+     LoadTest();
 };
+
 function ReplaceFuncs(){
 	if (DateBocks.magicDate2 == undefined){
 " + remove_people_js + numbers_greater_than_js + @"
@@ -223,7 +229,14 @@ function ReplaceFuncs(){
 	} " + prevent_recurring_force_complete
 + @"
 }
-window.addEventListener('load', OurLoaded, false);
+if (document.readyState === 'complete') {
+	OurLoaded();
+}else{
+	if (window.addEventListener)
+		window.addEventListener('load', OurLoaded, false);
+	else
+		 window.attachEvent('onload', OurLoaded);
+}
 " + replace_str + Settings.GetSettingS(SET_NAMES.AdditionalJS) + "\n";
 			if (Settings.GetSettingB(SET_NAMES.JSDebug)) {
 				try {
@@ -243,8 +256,9 @@ window.addEventListener('load', OurLoaded, false);
 			var script = (IHTMLScriptElement)doc2.createElement("SCRIPT");
 			script.type = "text/javascript";
 			script.text = js_str;
-			var css = (IHTMLElement)doc2.createElement("STYLE");
-			css.innerHTML = css_str;
+			var css = (IHTMLStyleElement)doc2.createElement("STYLE");
+			css.type = "text/css";
+			css.styleSheet.cssText = css_str;
 			IHTMLElementCollection nodes = doc2.getElementsByTagName("head");
 			foreach (var elem in nodes) {
 				var head = (HTMLHeadElement)elem;
