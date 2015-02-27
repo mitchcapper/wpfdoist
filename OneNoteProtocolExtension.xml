@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0"?>
 <Extensions>
 	<ParserExtensionProtocolHandler>
-		<regexp_to_find><![CDATA[(onenote:[^ #]+?([^\\\/]+)[\\\/]([a-zA-Z0-9]+)\.one#(?:([^&]+)&amp;section)?[^ ]+)]]></regexp_to_find>
+		<regexp_to_find><![CDATA[(?:https:\/\/onedrive.live.com[^ \n]+\n)?(onenote:[^ #]+?([^\\\/]+)[\\\/]([^\\\/.#]+)\.one#(?:([^&]+)&amp;section)?[^ ]+)]]></regexp_to_find>
 		<regexp_replace_with_func_body><![CDATA[return decodeURIComponent(arguments[1]) +': ' + decodeURIComponent(arguments[2]) + (arguments[3] !== undefined ? ' - ' + decodeURIComponent(arguments[3]) : '');]]></regexp_replace_with_func_body>
 		<override_url_func_body></override_url_func_body>
 	</ParserExtensionProtocolHandler>
