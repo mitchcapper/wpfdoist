@@ -19,7 +19,12 @@
 
 # Directions
 -	Install app (can run standalone in a folder as portable also, its just a rar archive as an exe)
+	-	You can install by using the setup exe under releases.
+	-	Double click it, it will ask for a temporary folder to copy the install files to and will then run setup.
+	-	Once it installs you can find it in your start menu under WPFDoist.
+	-	Primarily designed for Windows 8 / IE10 or newer (but may work on older editions)
 -	For first launch after install be sure to restart the app after starting it, as it must set compatibility settings for the browser
+-	Just login to the browser frame for the first load (should not have to do every start)
 -	Options are accessible by right clicking on the systray icon
 -	Browser controls work as normal IE,  you can use control +/- to zoom
 -	Keyboard shortcut to bring to front/add task: (defaults to control+shift+t)
