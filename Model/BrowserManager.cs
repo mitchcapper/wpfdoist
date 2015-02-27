@@ -111,6 +111,37 @@ namespace WPFDoist.Model {
 			if (last_base_url == key)
 				return;
 			last_base_url = key;
+			if (doc2.body == null && false)
+				return;
+
+			var script = (IHTMLScriptElement)doc2.createElement("SCRIPT");
+			script.type = "text/javascript";
+			script.text = GenerateJavascript();
+			var css = (IHTMLStyleElement)doc2.createElement("STYLE");
+			css.type = "text/css";
+			css.styleSheet.cssText = GenerateCSS();
+			IHTMLElementCollection nodes = doc2.getElementsByTagName("head");
+			foreach (var elem in nodes) {
+				var head = (HTMLHeadElement)elem;
+				head.appendChild((IHTMLDOMNode)script);
+				head.appendChild((IHTMLDOMNode)css);
+			}
+		}
+
+		public void FixBrowserMode() {
+			try {
+				RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", true);
+				if (key == null)
+					key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION");
+				key.SetValue("WPFDoist.exe", 11000, RegistryValueKind.DWord);
+			} catch (Exception) { }
+		}
+
+
+
+
+
+		private string GenerateJavascript() {
 			string prevent_recurring_force_complete = Settings.GetSettingB(SET_NAMES.DisableRecurringTaskFullComplete) ? @"
 //Can't use Agenda.completeItem as reference to function is bound early on so renaming doesnt work
 	if (ItemsModel.complete2 == undefined){
@@ -178,7 +209,6 @@ var wpf_proto_funcs = new Object();
 			}
 			replace_str += func_str;
 			var right_click_disable = Settings.GetSettingB(SET_NAMES.DisableContextMenu) ? "document.oncontextmenu = function() {return false;}" : "";
-			//MessageBox.Show(replace_str + "\n\n" + tag_str);
 			string js_str = @"
 function externalError(errorMsg, document, lineNumber) {
   window.external.onError(errorMsg, document, lineNumber);
@@ -243,37 +273,16 @@ if (document.readyState === 'complete') {
 					File.WriteAllText(@"c:\temp\js_debug.js", js_str);
 				} catch (Exception) { }
 			}
+			return js_str;
+		}
+		private string GenerateCSS() {
 			var disable_setting_icon = Settings.GetSettingB(SET_NAMES.HideTodoistSettings) ? ".cmp_gear {display: none !important;}\n" : "";
 			string css_str = disable_setting_icon + @"
 #search_bar .input_q {
 	width: 300px !important;
 }
-
 " + Settings.GetSettingS(SET_NAMES.AdditionalCSS) + "\n";
-			if (doc2.body == null && false)
-				return;
-
-			var script = (IHTMLScriptElement)doc2.createElement("SCRIPT");
-			script.type = "text/javascript";
-			script.text = js_str;
-			var css = (IHTMLStyleElement)doc2.createElement("STYLE");
-			css.type = "text/css";
-			css.styleSheet.cssText = css_str;
-			IHTMLElementCollection nodes = doc2.getElementsByTagName("head");
-			foreach (var elem in nodes) {
-				var head = (HTMLHeadElement)elem;
-				head.appendChild((IHTMLDOMNode)script);
-				head.appendChild((IHTMLDOMNode)css);
-			}
-		}
-
-		public void FixBrowserMode() {
-			try {
-				RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION", true);
-				if (key == null)
-					key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION");
-				key.SetValue("WPFDoist.exe", 11000, RegistryValueKind.DWord);
-			} catch (Exception) { }
+			return css_str;
 		}
 
 	}
