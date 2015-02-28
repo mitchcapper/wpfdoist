@@ -169,8 +169,8 @@ namespace WPFDoist.Model {
 			}
 			string replace_str = @"
 function wpf_replace_func_norm(ext_id){
-	window.external.logq('args:' + obj_str(arguments));
-	return wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + "" "";
+	var args = get_call_arr(arguments,2);
+	return wpf_funcs[ext_id].apply(null,args) + "" "";
 }
 function get_call_arr(args,start_at){
 	var call_arr = new Array();//slice does't work on arguments
@@ -180,15 +180,20 @@ function get_call_arr(args,start_at){
 	return call_arr;
 }
 function wpf_replace_func_link(ext_id,trash,full_link){
+	var args = get_call_arr(arguments,2);//if you call another func args changes to that
 	full_link = btoa(full_link);
-	return ""<a href='#' onclick=\""return window.external.plugin_link("" + ext_id + "",'"" + full_link + ""');\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a> "";
+	var display_str = (wpf_funcs[ext_id]) ? wpf_funcs[ext_id].apply(null,args) : args[0];
+	var ret_str = ""<a href='#' onclick=\""return window.external.plugin_link("" + ext_id + "",'"" +full_link+""');\"">"" + display_str + ""</a> "";
+	//window.external.logq(ret_str);
+	return ret_str;
 }
 function wpf_replace_func_proto(ext_id,trash,full_link){
+	var args = get_call_arr(arguments,2);
 	full_link = full_link.replace(""&amp;"",""&"");
 	if (wpf_proto_funcs[ext_id])
 		full_link = wpf_proto_funcs[ext_id](full_link);
 	full_link = btoa(full_link);
-	return ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,get_call_arr(arguments,2)) + ""</a> "";
+	return ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,args) + ""</a> "";
 }
 var wpf_funcs = new Object();
 var wpf_proto_funcs = new Object();
@@ -197,7 +202,8 @@ var wpf_proto_funcs = new Object();
 			var tag_str = "";
 			var itms = ViewModelLocator.instance.Extensions.extensions;
 			foreach (var itm in itms) {
-				func_str += "wpf_funcs[" + itm.id + "] = function(){" + itm.ext.regexp_replace_with_func_body + "};\n";
+				if (! String.IsNullOrWhiteSpace(itm.ext.regexp_replace_with_func_body))
+					func_str += "wpf_funcs[" + itm.id + "] = function(){" + itm.ext.regexp_replace_with_func_body + "};\n";
 				if (itm.type == EXT_TYPE.PROTO && !String.IsNullOrWhiteSpace(itm.ext_as_proto.override_url_func_body))
 					func_str += "wpf_proto_funcs[" + itm.id + "] = function(){" + itm.ext_as_proto.override_url_func_body + "};\n";
 				var func_name = "wpf_replace_func_norm";
