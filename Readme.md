@@ -28,3 +28,4 @@
 -	Options are accessible by right clicking on the systray icon
 -	Browser controls work as normal IE,  you can use control +/- to zoom
 -	Keyboard shortcut to bring to front/add task: (defaults to control+shift+t)
+-	You can change the data directory from the c:\users\appdata\.... to any folder you want by setting the registry key: HKEY_CURRENT_USER\Software\WPFDoist\DataDir (string) to whatever you like (ie r:\wpfdoist_shared\)

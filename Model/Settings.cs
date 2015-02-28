@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Microsoft.Win32;
 
 namespace WPFDoist.Model {
 	public enum SETTING_TYPE {STRING,BOOL};
@@ -68,9 +69,16 @@ namespace WPFDoist.Model {
 			path += @"\" + ct.Company +  @"\WPFDoist";
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
+
+			RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\WPFDoist\", false);
+			if (key != null) {
+				var dir_obj = key.GetValue("DataDir");
+				var dir = dir_obj == null ? null : dir_obj.ToString();
+				if (! String.IsNullOrWhiteSpace(dir) && Directory.Exists(dir))
+					path = dir;
+			}
 			return path;
 		}
-
 		private static string file_path = GetUserAppDataPath() + "\\program_settings.xml";
 		public static async Task ObjDumpToFile(Object obj, StreamWriter file) {
 			System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(obj.GetType());
