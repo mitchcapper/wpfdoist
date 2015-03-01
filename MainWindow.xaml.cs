@@ -39,7 +39,7 @@ namespace WPFDoist {
 			if (Settings.GetSettingB(SET_NAMES.MinimizeOnExit)) {
 				e.Cancel = true;
 				last_max = WindowState == WindowState.Maximized;
-				if (Settings.GetSettingB(SET_NAMES.MinimizeOnExit))
+				if (Settings.GetSettingB(SET_NAMES.HideWhenMinimized))
 					Hide();
 				else
 					WindowState = WindowState.Minimized;
@@ -55,6 +55,8 @@ namespace WPFDoist {
 				last_max = true;
 			if (WindowState == WindowState.Normal)
 				last_max = false;
+			if (WindowState == WindowState.Minimized && Settings.GetSettingB(SET_NAMES.HideWhenMinimized))
+				Hide();
 		}
 		private bool last_max = true;
 		private void unhide() {
