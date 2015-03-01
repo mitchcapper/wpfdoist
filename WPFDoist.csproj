@@ -26,8 +26,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>WPFDoist</ProductName>
     <PublisherName>Mitch Capper</PublisherName>
-    <SuiteName>NA</SuiteName>
-    <ApplicationRevision>12</ApplicationRevision>
+    <SuiteName>WPFDoist</SuiteName>
+    <ApplicationRevision>16</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
