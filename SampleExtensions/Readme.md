@@ -1,5 +1,7 @@
 # Extensions
-Extensions can go in the application folder or the user folder.
+Extensions allow you to easily stylize or add additional functionality to Todoist for how it parses tasks.  You can do things like enable custom protocols (see the one note plugin for an example).  You can call external programs or run your own .net code (ParserExtensionLink see UnsafeOneNote for an example).  You can also do simple things like add colors or icons (see Highlighter example).   
+
+Extensions can go in the application folder or the user data folder.
 Extensions can be one of the following types:
 -	ParserExtension - Just replaces the regex match with html/text returned by the function
 -	ParserExtensionLink - calls a .net function and passes the first regex match to it when clicked
@@ -17,18 +19,18 @@ Extensions can be one of the following types:
 -	ParserExtensionProtocolHandler has one additional (optional) member:
 	-		override\_url\_func_body - This you can leave empty (but must still specify it).  If not empty the code will call this function and pass in the regex matches.  This is primarily useful if you need to do more than just a regex to get your url into a usable form. You should return a valid link here (it will be what document.location is set to).
 
-## .NET Plugins
+## .NET Extensions
 -	Create a new project of type "Class Library" add a reference to the WPFDoistExtLib.dll then make sure your class inherits from the proper interface for your type: iParserExtension, iParserExtensionLink, iParserExtensionProtocolHandler
 -	Make sure your project name and DLL both end in Extension (so it should result in YourPluginNameExtension.dll) or else it wont be loaded
 
-## XML Plugins
+## XML Extensions
 -	For xml enclose your fields with <![CDATA[YOUR\_CONTENT_HERE]]> to avoid having to worry about xml escaping
 -	Make sure you name your nodes properly see examples for how
 
 ## Examples
 -	There are .net and javascript examples for each type.  Look at the SampleExtensions folder for how to write plugins.  *.xml files in that folder are the xml examples (also see the OneNoteProtocolExtension.xml in the main folder).  The Project files are .net examples.
 -	The unsafe onenote extension uses Process.start to run the onenote link, using shell execute on web content is probably a bad idea which is why we switched to the protocol handler version that the browser uses:)
--	The highlighter extension shows a simple extension that iwll highlight single words in green that in tasks like _word_  (underscores on each side0 
+-	The highlighter extension shows a simple extension that will highlight single words in green that in tasks like \_word_  (underscores on each side)
 
 
 ## Debugging
