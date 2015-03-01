@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -71,7 +72,7 @@ namespace WPFDoist.Model {
 				Directory.CreateDirectory(path);
 
 			RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\WPFDoist\", false);
-			if (key != null) {
+			if (key != null && ! Debugger.IsAttached) {//if debugging we dont need to use network folder
 				var dir_obj = key.GetValue("DataDir");
 				var dir = dir_obj == null ? null : dir_obj.ToString();
 				if (! String.IsNullOrWhiteSpace(dir) && Directory.Exists(dir))
