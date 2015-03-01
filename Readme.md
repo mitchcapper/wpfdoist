@@ -2,7 +2,7 @@
 -	Todoist Windows app has some decent issues and less than great dependencies.
 
 # Features
--	WPF Native browser control
+-	WPF Native browser control (supports high DPI to soom just hit control + plus to zoom)
 -	Windows keyboard shortcut support for adding tasks/bringing to front
 -	Allows adding of additional javascript/css to the page (to have your code after full load add a js function called UserOnLoaded)
 -	Outlook email links
