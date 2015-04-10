@@ -151,22 +151,10 @@ namespace WPFDoist.Model {
 			return ItemsModel.complete2(c,h);
 		};
 	}
-" + "\n" : "";
+" + "\n" : "ItemsModel.complete2=true;//just so we can test if we were loaded";
 			string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "PeopleAssigner.render = function(){return null;};" + "\n" : "";
 			string numbers_greater_than_js = "";
-			var greater_str = Settings.GetSettingS(SET_NAMES.SearchForNumbersGreaterThan);
-			if (!String.IsNullOrWhiteSpace(greater_str)) {
-				numbers_greater_than_js = @"
-		DateBocks.magicDate2 = DateBocks.magicDate;
-		DateBocks.magicDate = function (j,a) {
-			if (! isNaN(j) ){
-				var num = parseInt(j);
-				if (! isNaN(num) && num > " + greater_str + @" )
-					return -1;
-			}
-			return DateBocks.magicDate2(j,a);
-		};" + "\n";
-			}
+			
 			string replace_str = @"
 function wpf_replace_func_norm(ext_id){
 	var args = get_call_arr(arguments,2);
@@ -262,8 +250,8 @@ function OurLoaded(){
 };
 
 function ReplaceFuncs(){
-	if (DateBocks.magicDate2 == undefined){
-" + remove_people_js + numbers_greater_than_js + @"
+	if (ItemsModel.complete2 == undefined){
+" + remove_people_js +  @"
 		
 	} " + prevent_recurring_force_complete
 + @"

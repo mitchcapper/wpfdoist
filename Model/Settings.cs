@@ -13,7 +13,7 @@ namespace WPFDoist.Model {
 	public enum SETTING_TYPE {STRING,BOOL};
 	
 	
-	public enum SET_NAMES { MinimizeOnExit, HideWhenMinimized, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions,SearchForNumbersGreaterThan, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey,
+	public enum SET_NAMES { MinimizeOnExit, HideWhenMinimized, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey,
 		JSDebug
 	};
 	public static class Settings {
@@ -144,7 +144,6 @@ namespace WPFDoist.Model {
 			AddSetting(SET_NAMES.DisableContextMenu,"Disable browser right click (still gets todoist context menu)",  true);
 			AddSetting(SET_NAMES.RemovePeopleAssign, "Remove the people assignment option on tasks",  false);
 			AddSetting(SET_NAMES.HideOptions,"Hide WPFDoist options (only way to re-enable is delete/edit settings file)", false);
-			AddSetting(SET_NAMES.SearchForNumbersGreaterThan, "If a number is specified here you can search for numbers greater than this number (normally it treats numbers as days)", "999");
 			AddSetting(SET_NAMES.HotKeyUseAlt, "", false);
 			AddSetting(SET_NAMES.HotKeyUseControl, "", true);
 			AddSetting(SET_NAMES.HotKeyUseShift, "",  true);
