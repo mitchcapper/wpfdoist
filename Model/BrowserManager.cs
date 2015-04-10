@@ -193,7 +193,10 @@ function wpf_replace_func_proto(ext_id,trash,full_link){
 	if (wpf_proto_funcs[ext_id])
 		full_link = wpf_proto_funcs[ext_id](full_link);
 	full_link = btoa(full_link);
-	return ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,args) + ""</a> "";
+	var ret_str = ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,args) + ""</a> "";
+	window.external.logq(ret_str);
+//window.external.logq(JSON.stringify(
+	return ret_str;
 }
 var wpf_funcs = new Object();
 var wpf_proto_funcs = new Object();
