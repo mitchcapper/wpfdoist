@@ -278,6 +278,9 @@ if (document.readyState === 'complete') {
 #search_bar .input_q {
 	width: 300px !important;
 }
+.due_date_holder input {
+    font-size: 13px;
+}
 " + Settings.GetSettingS(SET_NAMES.AdditionalCSS) + "\n";
 			return css_str;
 		}
