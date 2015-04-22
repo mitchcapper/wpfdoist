@@ -51,8 +51,8 @@ namespace WPFDoist.ViewModel {
 			get { return _title; }
 			set { Set(() => title, ref _title, value); }
 		}
-		private string _title="WPFDoist";
-		
+		private string _title = "WPFDoist";
+
 		public MainViewModel() {
 		}
 		private BrowserManager browser;
@@ -87,7 +87,7 @@ namespace WPFDoist.ViewModel {
 		}
 
 		public void OnLoad(WebBrowser web_browser) {
-			
+
 			browser = new BrowserManager(web_browser);
 			browser.FixBrowserMode();
 			browser.TitleChanged += (o, e) => title = e;
