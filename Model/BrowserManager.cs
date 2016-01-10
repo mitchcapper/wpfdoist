@@ -155,7 +155,6 @@ namespace WPFDoist.Model {
 			//string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "PeopleAssigner.render = function(){return null;};" + "\n" : "";
 			string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "ItemsModel.DepCollaborators.isProjectShared = function(){return false;};" + "\n" : "";
 			
-            string numbers_greater_than_js = "";
 			
 			string replace_str = @"
 function wpf_replace_func_norm(ext_id){
@@ -184,8 +183,7 @@ function wpf_replace_func_proto(ext_id,trash,full_link){
 		full_link = wpf_proto_funcs[ext_id](full_link);
 	full_link = btoa(full_link);
 	var ret_str = ""<a href='#' onclick=\""return window.location=atob('"" + full_link + ""');return false;\"">"" + wpf_funcs[ext_id].apply(null,args) + ""</a> "";
-	window.external.logq(ret_str);
-//window.external.logq(JSON.stringify(
+	//window.external.logq(ret_str);
 	return ret_str;
 }
 var wpf_funcs = new Object();
@@ -248,7 +246,7 @@ DoistFormat.our_formatter = function(str,replace_objs){
 		var res = this.orig_format(str,replace_objs);
 		res = res.replace(/_NOTLTSN/g, '<');
 		res = res.replace(/_NOTGTSN/g, '>');
-		window.external.logq('Formatter request for: ' + str + ' returning: ' + res);
+		//window.external.logq('Formatter request for: ' + str + ' returning: ' + res);
 	    return res;
 	};
 		DoistFormat.orig_format = DoistFormat.format;
