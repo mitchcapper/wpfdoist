@@ -10,7 +10,7 @@ using Microsoft.Practices.ServiceLocation;
 using WPFDoist.Model;
 
 namespace WPFDoist.ViewModel {
-	class ViewModelLocator {
+	public class ViewModelLocator {
 		private static ViewModelLocator _instance;
 		public static ViewModelLocator instance {
 			get { return _instance ?? (_instance = new ViewModelLocator()); }

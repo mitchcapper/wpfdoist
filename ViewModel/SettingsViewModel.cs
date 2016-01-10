@@ -7,7 +7,7 @@ using System.Windows;
 using WPFDoist.Model;
 
 namespace WPFDoist.ViewModel {
-	class SettingsViewModel : OurViewModelBase {
+	public class SettingsViewModel : OurViewModelBase {
 
 		public SettingsViewModel() {
 			

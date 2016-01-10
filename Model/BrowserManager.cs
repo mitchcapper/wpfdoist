@@ -152,8 +152,10 @@ namespace WPFDoist.Model {
 		};
 	}
 " + "\n" : "ItemsModel.complete2=true;//just so we can test if we were loaded";
-			string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "PeopleAssigner.render = function(){return null;};" + "\n" : "";
-			string numbers_greater_than_js = "";
+			//string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "PeopleAssigner.render = function(){return null;};" + "\n" : "";
+			string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "ItemsModel.DepCollaborators.isProjectShared = function(){return false;};" + "\n" : "";
+			
+            string numbers_greater_than_js = "";
 			
 			string replace_str = @"
 function wpf_replace_func_norm(ext_id){
@@ -188,6 +190,8 @@ function wpf_replace_func_proto(ext_id,trash,full_link){
 }
 var wpf_funcs = new Object();
 var wpf_proto_funcs = new Object();
+var wpf_replace_actions = new Array();
+
 ";
 			var func_str = "";
 			var tag_str = "";
@@ -202,7 +206,7 @@ var wpf_proto_funcs = new Object();
 					func_name = "wpf_replace_func_link";
 				if (itm.type == EXT_TYPE.PROTO)
 					func_name = "wpf_replace_func_proto";
-				tag_str += "Formatter.tags_to_enable.push([/" + itm.ext.regexp_to_find + " /g," + func_name + ".bind(Formatter," + itm.id + "),/" + itm.ext.regexp_to_find + "$/g," + func_name + ".bind(Formatter," + itm.id + ")]);\n";//must have a space following or be the end of the task
+				tag_str += "wpf_replace_actions.push([/" + itm.ext.regexp_to_find + " /g," + func_name + ".bind(DoistFormat," + itm.id + ")],[/" + itm.ext.regexp_to_find + "$/g," + func_name + ".bind(DoistFormat," + itm.id + ")]);\n";//must have a space following or be the end of the task
 			}
 			replace_str += func_str;
 			var right_click_disable = Settings.GetSettingB(SET_NAMES.DisableContextMenu) ? "document.oncontextmenu = function() {return false;}" : "";
@@ -232,13 +236,32 @@ function HandleUrl(url){
 	window.external.HandleLink(url);
 	return false;
 }
+function ReplaceFormatter(){
+DoistFormat.our_formatter = function(str,replace_objs){
+		str = str.replace(/</g, '&lt;');
+		str = str.replace(/>/g, '&gt;');
+		for (var i=0;i < wpf_replace_actions.length;i++){
+			str = str.replace(wpf_replace_actions[i][0], wpf_replace_actions[i][1]); 
+	    }
+		str = str.replace(/</g, '_NOTLTSN');
+		str = str.replace(/>/g, '_NOTGTSN');
+		var res = this.orig_format(str,replace_objs);
+		res = res.replace(/_NOTLTSN/g, '<');
+		res = res.replace(/_NOTGTSN/g, '>');
+		window.external.logq('Formatter request for: ' + str + ' returning: ' + res);
+	    return res;
+	};
+		DoistFormat.orig_format = DoistFormat.format;
+	DoistFormat.format = DoistFormat.our_formatter;
+}
 function LoadTest(){
-	if (! window.Formatter){
+	if (! window.DoistFormat){
 		setTimeout(LoadTest, 300);
 		return;
 	}
 	setTimeout( ReplaceFuncs, 3000 );" + "\n" + right_click_disable + "\n" + tag_str +
 @"
+	ReplaceFormatter();
 	ReplaceFuncs();
 	if (window.UserOnLoaded){
 		window.UserOnLoaded();
