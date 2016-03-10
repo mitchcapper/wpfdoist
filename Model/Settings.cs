@@ -14,7 +14,7 @@ namespace WPFDoist.Model {
 	
 	
 	public enum SET_NAMES { MinimizeOnExit, HideWhenMinimized, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey,
-		JSDebug
+		JSDebug, OldSearchBehavior
 	};
 	public static class Settings {
 		public class SaveSetting {
@@ -141,6 +141,7 @@ namespace WPFDoist.Model {
 			AddSetting(SET_NAMES.AdditionalCSS,"Additional css to inject on page", "");
 			AddSetting(SET_NAMES.DisableRecurringTaskFullComplete,"Hitting shift while clicking a recurring task can complete it forever, this disables this from occuring", false);
 			AddSetting(SET_NAMES.HideTodoistSettings, "Hide todoist settings icon",  false);
+			AddSetting(SET_NAMES.OldSearchBehavior, "Search on enter for search bar (don't autocomplete)", false);
 			AddSetting(SET_NAMES.DisableContextMenu,"Disable browser right click (still gets todoist context menu)",  true);
 			AddSetting(SET_NAMES.RemovePeopleAssign, "Remove the people assignment option on tasks",  false);
 			AddSetting(SET_NAMES.HideOptions,"Hide WPFDoist options (only way to re-enable is delete/edit settings file)", false);
