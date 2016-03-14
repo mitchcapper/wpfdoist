@@ -208,7 +208,15 @@ var wpf_replace_actions = new Array();
 			}
 			replace_str += func_str;
 			var right_click_disable = Settings.GetSettingB(SET_NAMES.DisableContextMenu) ? "document.oncontextmenu = function() {return false;}" : "";
-			var old_search_behavior = Settings.GetSettingB(SET_NAMES.OldSearchBehavior) ? "AmiComplete._show = function (m, g, a, k) {return g.onNoMatches();}" : "";
+			var old_search_behavior = ! Settings.GetSettingB(SET_NAMES.OldSearchBehavior) ?"" : @"
+AmiComplete.orig_show = AmiComplete._show;
+AmiComplete._show = function (m, g, a, k) {
+	if (m && m.className && m.className.indexOf('quick_find') != -1)
+		return g.onNoMatches();
+	else
+		return AmiComplete.orig_show(m, g, a, k);
+}
+";
 			string js_str = @"
 function externalError(errorMsg, document, lineNumber) {
   window.external.onError(errorMsg, document, lineNumber);
@@ -258,7 +266,7 @@ function LoadTest(){
 		setTimeout(LoadTest, 300);
 		return;
 	}
-	setTimeout( ReplaceFuncs, 3000 );" + "\n" + right_click_disable + "\n" + old_search_behavior + "\n" + tag_str +
+	setTimeout( ReplaceFuncs, 3000 );" + "\n" + right_click_disable + "\n" + tag_str +
 @"
 	ReplaceFormatter();
 	ReplaceFuncs();
@@ -273,7 +281,8 @@ function OurLoaded(){
 
 function ReplaceFuncs(){
 	if (ItemsModel.complete2 == undefined){
-" + remove_people_js +  @"
+" + remove_people_js + "\n" + old_search_behavior + "\n"
++  @"
 		
 	} " + prevent_recurring_force_complete
 + @"
