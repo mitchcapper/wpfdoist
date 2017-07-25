@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +14,7 @@ namespace WPFDoist.Model {
 	
 	
 	public enum SET_NAMES { MinimizeOnExit, HideWhenMinimized, AdditionalJS, AdditionalCSS, DisableRecurringTaskFullComplete, HideTodoistSettings, DisableContextMenu, RemovePeopleAssign, HideOptions, HotKeyUseAlt,HotKeyUseShift,HotKeyUseControl,HotKeyKey,
-		JSDebug, OldSearchBehavior
+		JSDebug, OldSearchBehavior, AllowShortPlusDayMode
 	};
 	public static class Settings {
 		public class SaveSetting {
@@ -145,10 +145,13 @@ namespace WPFDoist.Model {
 			AddSetting(SET_NAMES.DisableContextMenu,"Disable browser right click (still gets todoist context menu)",  true);
 			AddSetting(SET_NAMES.RemovePeopleAssign, "Remove the people assignment option on tasks",  false);
 			AddSetting(SET_NAMES.HideOptions,"Hide WPFDoist options (only way to re-enable is delete/edit settings file)", false);
+			AddSetting(SET_NAMES.AllowShortPlusDayMode, "Allow old short day notation for +5 or +5d or just 5 /+5 rather than having to do +5 days", false);
+			
 			AddSetting(SET_NAMES.HotKeyUseAlt, "", false);
 			AddSetting(SET_NAMES.HotKeyUseControl, "", true);
 			AddSetting(SET_NAMES.HotKeyUseShift, "",  true);
 			AddSetting(SET_NAMES.HotKeyKey, "", "T");
+
 			AddSetting(SET_NAMES.JSDebug, @"Javascript/Plugin Debugging (alerts on errors, and writes c:\temp\js_debug.js)", false);
 			LoadSettings();
 		}

@@ -1,11 +1,12 @@
-﻿<Window x:Class="WPFDoist.SettingsWindow"
+<Window x:Class="WPFDoist.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFDoist"
         mc:Ignorable="d" DataContext="{Binding Settings, Source={StaticResource Locator}}"
-        Title="WPFDoist Settings" Height="770" Width="700" WindowStartupLocation="CenterScreen">
+        Title="WPFDoist Settings" Height="800" Width="700" WindowStartupLocation="CenterScreen">
+	<ScrollViewer>
     <Grid Margin="15">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -51,13 +52,16 @@
 			<CheckBox IsChecked="{Binding hot_key_alt}" Content="Alt" />
             <TextBox MaxLength="1" Width="20" Text="{Binding hot_key_char}"  Margin="10,0" />
             </StackPanel>
-		<StackPanel Grid.Row="1">
+			<StackPanel Grid.Row="1">
+
 		<ItemsControl ItemsSource="{Binding string_settings}" ItemTemplate="{DynamicResource SettingsTemplate}"/>
 		<ItemsControl ItemsSource="{Binding bool_settings}" ItemTemplate="{DynamicResource SettingsTemplateBool}"/>
-			</StackPanel>
+			
+		</StackPanel>
 		<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center">
 			<Button Content="Save" Margin="20,0" IsDefault="True" Click="ButtonSave_Click" />
 			<Button Content="Cancel" IsCancel="True" Height="20" Click="ButtonCancel_Click" VerticalAlignment="Top" />
 		</StackPanel>
     </Grid>
+	</ScrollViewer>
 </Window>

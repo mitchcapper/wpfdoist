@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -152,6 +152,22 @@ namespace WPFDoist.Model {
 		};
 	}
 " + "\n" : "ItemsModel.complete2=true;//just so we can test if we were loaded";
+			string allow_old_date_mode = Settings.GetSettingB(SET_NAMES.AllowShortPlusDayMode) ? @"
+//same regex is in WPFDoist
+var date_replace_re = /^\+?([0-9]+)(\s*d(ay)?s?)?$/;
+var date_replace_re_at = /^\+?([0-9]+)(\s*d(ay)?s?)?\s+(at|@)/;
+if (! Dateist.parse2){
+	Dateist.parse2 = Dateist.parse;
+	Dateist.parse = function (val, t){
+		if (val){
+			val = val.replace(date_replace_re,' +$1 days');
+			val = val.replace(date_replace_re_at, '+$1 days @');
+		}
+		return Dateist.parse2(val, t);
+	}
+}
+
+" : "";
 			//string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "PeopleAssigner.render = function(){return null;};" + "\n" : "";
 			string remove_people_js = Settings.GetSettingB(SET_NAMES.RemovePeopleAssign) ? "ItemsModel.DepCollaborators.isProjectShared = function(){return false;};" + "\n" : "";
 			
@@ -281,9 +297,16 @@ function OurLoaded(){
 
 function ReplaceFuncs(){
 	if (ItemsModel.complete2 == undefined){
-" + remove_people_js + "\n" + old_search_behavior + "\n"
-+  @"
-		
+
+" + remove_people_js + "\n" + old_search_behavior + "\n" + allow_old_date_mode + "\n"
++ @"
+		LocationManager.setHash2 = LocationManager.setHash;
+		LocationManager.setHash = function (hash){
+		if (hash == undefined)
+			hash='';
+		LocationManager.setHash2(hash);
+};
+
 	} " + prevent_recurring_force_complete
 + @"
 }
